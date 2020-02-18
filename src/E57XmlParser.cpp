@@ -257,11 +257,11 @@ void E57XmlParser::init()
    }
 
    //??? check these are right
-   xmlReader->setFeature(XMLUni::fgSAX2CoreValidation,        true);
-   xmlReader->setFeature(XMLUni::fgXercesDynamic,             true);
+   xmlReader->setFeature(XMLUni::fgSAX2CoreValidation,        false);
+   xmlReader->setFeature(XMLUni::fgXercesDynamic,             false);
    xmlReader->setFeature(XMLUni::fgSAX2CoreNameSpaces,        true);
-   xmlReader->setFeature(XMLUni::fgXercesSchema,              true);
-   xmlReader->setFeature(XMLUni::fgXercesSchemaFullChecking,  true);
+   xmlReader->setFeature(XMLUni::fgXercesSchema,              false);
+   xmlReader->setFeature(XMLUni::fgXercesSchemaFullChecking,  false);
    xmlReader->setFeature(XMLUni::fgSAX2CoreNameSpacePrefixes, true);
 
    xmlReader->setContentHandler( this );
