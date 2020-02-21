@@ -35,6 +35,8 @@
 #include "E57XmlParser.h"
 #include "ImageFileImpl.h"
 
+#include <sstream>
+
 using namespace e57;
 using namespace std;
 using namespace XERCES_CPP_NAMESPACE;
@@ -82,6 +84,14 @@ static const XMLCh att_recordCount[] = {
     chLatin_r, chLatin_e, chLatin_c, chLatin_o, chLatin_r, chLatin_d,
     chLatin_C, chLatin_o, chLatin_u, chLatin_n, chLatin_t, chNull
 };
+
+double scitod( std::string s )
+{
+    std::stringstream ss(s);
+    double d = 0.0;
+    ss >> d;
+    return d;
+}
 
 inline int64_t  convertStrToLL( const std::string &inStr )
 {
@@ -236,19 +246,20 @@ E57XmlParser::~E57XmlParser()
 
    xmlReader = nullptr;
 
-   XMLPlatformUtils::Terminate();
+   //XMLPlatformUtils::Terminate();
 }
 
 void E57XmlParser::init()
 {
    // Initialize the XML4C2 system
+   /*
    try {
       XMLPlatformUtils::Initialize();
    } catch (const XMLException& ex) {
       /// Turn parser exception into E57Exception
       throw E57_EXCEPTION2(E57_ERROR_XML_PARSER_INIT, "parserMessage=" + ustring(XMLString::transcode(ex.getMessage())));
    }
-
+   */
    xmlReader = XMLReaderFactory::createXMLReader(); //??? auto_ptr?
 
    if ( xmlReader == nullptr )
@@ -353,7 +364,7 @@ void E57XmlParser::startElement(const   XMLCh* const    uri,
 
         if (isAttributeDefined(attributes, att_scale)) {
             ustring scale_str = lookupAttribute(attributes, att_scale);
-            pi.scale = atof(scale_str.c_str());  //??? use exact rounding library
+            pi.scale = scitod(scale_str);  //??? use exact rounding library
         } else {
             /// Not defined defined in XML, so defaults to 1.0
             pi.scale = 1.0;
@@ -361,7 +372,7 @@ void E57XmlParser::startElement(const   XMLCh* const    uri,
 
         if (isAttributeDefined(attributes, att_offset)) {
             ustring offset_str = lookupAttribute(attributes, att_offset);
-            pi.offset = atof(offset_str.c_str());  //??? use exact rounding library
+            pi.offset = scitod(offset_str);  //??? use exact rounding library
         } else {
             /// Not defined defined in XML, so defaults to 0.0
             pi.offset = 0.0;
@@ -396,7 +407,7 @@ void E57XmlParser::startElement(const   XMLCh* const    uri,
 
         if (isAttributeDefined(attributes, att_minimum)) {
             ustring minimum_str = lookupAttribute(attributes, att_minimum);
-            pi.floatMinimum = atof(minimum_str.c_str());  //??? use exact rounding library
+            pi.floatMinimum = scitod(minimum_str);  //??? use exact rounding library
         } else {
             /// Not defined defined in XML, so defaults to E57_FLOAT_MIN or E57_DOUBLE_MIN
             if (pi.precision == E57_SINGLE)
@@ -407,7 +418,7 @@ void E57XmlParser::startElement(const   XMLCh* const    uri,
 
         if (isAttributeDefined(attributes, att_maximum)) {
             ustring maximum_str = lookupAttribute(attributes, att_maximum);
-            pi.floatMaximum = atof(maximum_str.c_str());  //??? use exact rounding library
+            pi.floatMaximum = scitod(maximum_str);  //??? use exact rounding library
         } else {
             /// Not defined defined in XML, so defaults to FLOAT_MAX or DOUBLE_MAX
             if (pi.precision == E57_SINGLE)
@@ -619,7 +630,7 @@ void E57XmlParser::endElement(const XMLCh* const uri,
             /// Convert child text (if any) to value, else default to 0.0
             double floatValue;
             if (pi.childText.length() > 0)
-                floatValue = atof(pi.childText.c_str());
+                floatValue = scitod(pi.childText);
             else
                 floatValue = 0.0;
             shared_ptr<FloatNodeImpl> f_ni(new FloatNodeImpl(imf_, floatValue, pi.precision, pi.floatMinimum, pi.floatMaximum));
