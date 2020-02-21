@@ -471,8 +471,7 @@ IntegerNodeImpl::IntegerNodeImpl(ImageFileImplWeakPtr destImageFile, int64_t val
 {
     // don't checkImageFileOpen, NodeImpl() will do it
 
-    /// Do not enforce the given bounds
-    /*
+    /// Enforce the given bounds
     if (value < minimum || maximum < value)
     {
         throw E57_EXCEPTION2(E57_ERROR_VALUE_OUT_OF_BOUNDS,
@@ -480,7 +479,7 @@ IntegerNodeImpl::IntegerNodeImpl(ImageFileImplWeakPtr destImageFile, int64_t val
                              + " value=" + toString(value)
                              + " minimum=" + toString(minimum)
                              + " maximum=" + toString(maximum));
-    }*/
+    }
 }
 
 bool IntegerNodeImpl::isTypeEquivalent(NodeImplSharedPtr ni)
@@ -593,15 +592,14 @@ ScaledIntegerNodeImpl::ScaledIntegerNodeImpl(ImageFileImplWeakPtr destImageFile,
 {
     // don't checkImageFileOpen, NodeImpl() will do it
 
-    /// Do not enforce the given bounds on raw value
-    /*
+    /// Enforce the given bounds on raw value
     if (rawValue < minimum || maximum < rawValue) {
         throw E57_EXCEPTION2(E57_ERROR_VALUE_OUT_OF_BOUNDS,
                              "this->pathName=" + this->pathName()
                              + " rawValue=" + toString(rawValue)
                              + " minimum=" + toString(minimum)
                              + " maximum=" + toString(maximum));
-    }*/
+    }
 }
 //=============================================================================
 ScaledIntegerNodeImpl::ScaledIntegerNodeImpl(ImageFileImplWeakPtr destImageFile, double scaledValue, double scaledMinimum, double scaledMaximum, double scale, double offset)
@@ -614,15 +612,14 @@ ScaledIntegerNodeImpl::ScaledIntegerNodeImpl(ImageFileImplWeakPtr destImageFile,
 {
     // don't checkImageFileOpen, NodeImpl() will do it
 
-    /// Do not enforce the given bounds on raw value
-    /*
+    /// Enforce the given bounds on raw value
     if (scaledValue < scaledMinimum || scaledMaximum < scaledValue) {
         throw E57_EXCEPTION2(E57_ERROR_VALUE_OUT_OF_BOUNDS,
                              "this->pathName=" + this->pathName()
                              + " scaledValue=" + toString(scaledValue)
                              + " scaledMinimum=" + toString(scaledMinimum)
                              + " scaledMaximum=" + toString(scaledMaximum));
-    }*/
+    }
 }
 
 bool ScaledIntegerNodeImpl::isTypeEquivalent(NodeImplSharedPtr ni)
@@ -787,8 +784,7 @@ FloatNodeImpl::FloatNodeImpl(ImageFileImplWeakPtr destImageFile, double value, F
             maximum_ = E57_FLOAT_MAX;
     }
 
-    /// Do not enforce the given bounds on raw value
-    /*
+    /// Enforce the given bounds on raw value
     if (value < minimum || maximum < value)
     {
         throw E57_EXCEPTION2(E57_ERROR_VALUE_OUT_OF_BOUNDS,
@@ -796,7 +792,7 @@ FloatNodeImpl::FloatNodeImpl(ImageFileImplWeakPtr destImageFile, double value, F
                              + " value=" + toString(value)
                              + " minimum=" + toString(minimum)
                              + " maximum=" + toString(maximum));
-    }*/
+    }
 }
 
 bool FloatNodeImpl::isTypeEquivalent(NodeImplSharedPtr ni)
